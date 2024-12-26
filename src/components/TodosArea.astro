@@ -1,0 +1,108 @@
+---
+import { eq } from 'drizzle-orm'
+import { db } from '@/lib/server/db'
+import { todos } from '@/lib/server/db/schema'
+import { Icon } from 'astro-icon/components'
+
+export interface Props {
+	userId: string
+}
+const { userId } = Astro.props
+
+const Todos = await db.select().from(todos).where(eq(todos.user, userId)).all()
+console.log('🚀  Todos :- ', Todos)
+---
+
+<div style='width: 100%;'>
+	<h2>Todos List and Manage</h2>
+	<ul id='todos-ul'>
+		{
+			Todos.map((todo) => (
+				<li class='flex-main' data-todo-id={todo.id}>
+					{todo.todo}
+					<div class='flex-center'>
+						<Icon size={35} name='delete' />
+						<input type='checkbox' checked={todo.done} name='done' />
+					</div>
+				</li>
+			))
+		}
+	</ul>
+</div>
+
+<script>
+	import { addBlinkingAnimation, removeBlinkingAnimation } from '@/lib/client'
+	import { actions } from 'astro:actions'
+
+	const todosUl = document.getElementById('todos-ul') as HTMLUListElement
+
+	todosUl.addEventListener('click', async (event) => {
+		const target = event.target as HTMLElement
+
+		if (target instanceof HTMLInputElement) {
+			const ListItem = target.parentElement?.parentElement as HTMLLIElement
+			const todoId = ListItem.dataset.todoId
+			const todoDone = target.checked
+			console.log(`🚀  todoId :- ${todoId} todoDone :- ${todoDone}`)
+
+			if (todoId) {
+				addBlinkingAnimation(ListItem)
+
+				const { data, error } = await actions.doneTodo({
+					todoId: todoId,
+					todoDone: todoDone,
+				})
+				if (data?.updated) {
+					target.checked = todoDone
+				} else {
+					console.error(error)
+				}
+				removeBlinkingAnimation(ListItem)
+			}
+		}
+
+		if (target.tagName === 'use') {
+			const ListItem = target.parentElement?.parentElement
+				?.parentElement as HTMLLIElement
+			const todoId = ListItem.dataset.todoId
+			addBlinkingAnimation(ListItem)
+			console.log(`🚀  todoId :- ${todoId} `)
+			await new Promise((resolve) => setTimeout(resolve, 5000))
+			removeBlinkingAnimation(ListItem)
+		}
+	})
+</script>
+
+<style>
+	#todos-ul {
+		width: 100%;
+		margin: auto;
+
+		li {
+			list-style: none;
+			padding: 1rem;
+			border-radius: var(--pico-border-radius);
+			max-width: 55rem;
+			width: 70%;
+			border: var(--pico-border-width) solid var(--pico-primary-border);
+			margin: auto;
+			margin-top: 1rem;
+		}
+	}
+
+	button {
+		padding: 0px;
+	}
+
+	.flex-center {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.flex-main {
+		display: flex;
+		justify-content: space-between;
+	}
+</style>

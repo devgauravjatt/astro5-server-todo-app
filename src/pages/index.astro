@@ -1,0 +1,40 @@
+---
+import TodosArea from '@/components/TodosArea.astro'
+import Welcome from '@/components/Welcome.astro'
+import Layout from '@/layouts/Layout.astro'
+
+if (!Astro.locals.user?.id) return Astro.redirect('/signin')
+
+const userId = Astro.locals.user.id
+---
+
+<Layout>
+	<div>
+		<Welcome userId={userId} />
+		<button id='signOutButton'>Sign Out</button>
+		<div>
+			<TodosArea userId={userId} />
+		</div>
+	</div>
+	<script>
+		import { authClient } from '@/lib/client/auth-client'
+
+		document
+			.getElementById('signOutButton')
+			?.addEventListener('click', async () => {
+				await authClient.signOut()
+				window.location.href = '/signin'
+			})
+	</script>
+</Layout>
+
+<style>
+	div {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 1rem;
+		width: 100%;
+	}
+</style>

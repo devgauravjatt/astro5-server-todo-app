@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang='en'>
+	<head>
+		<meta charset='UTF-8' />
+		<meta name='viewport' content='width=device-width' />
+		<link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+		<meta name='generator' content={Astro.generator} />
+		<link
+			rel='stylesheet'
+			href='https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.sand.min.css'
+		/>
+		<title>Astro Basics</title>
+	</head>
+	<body>
+		<header>
+			<a href='/'
+				><h3>Astor Authentication</h3>
+				<p>astro Authentication with Better Auth</p></a
+			>
+		</header>
+		<main>
+			<slot />
+		</main>
+	</body>
+</html>
+
+<style is:global>
+	@keyframes blinking {
+		0% {
+			opacity: 0.4;
+		}
+		50% {
+			opacity: 1;
+		}
+		100% {
+			opacity: 0.4;
+		}
+	}
+
+	.blinking-animation {
+		animation: blinking 1s infinite;
+	}
+</style>
+
+<style>
+	main {
+		padding-top: 1rem;
+		margin: auto;
+		max-width: 56rem;
+		padding: 4rem;
+	}
+
+	a {
+		text-decoration: none;
+	}
+
+	header {
+		background-color: var(--pico-primary-background);
+		text-align: center;
+		padding-block: 0.5rem;
+
+		h3 {
+			margin: 0;
+		}
+
+		p {
+			margin: 0;
+		}
+	}
+</style>

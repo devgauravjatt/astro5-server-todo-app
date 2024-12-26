@@ -1,0 +1,52 @@
+---
+if (Astro.locals.user?.id) return Astro.redirect('/')
+import Layout from '@/layouts/Layout.astro'
+---
+
+<Layout>
+	<div class='container'>
+		<h2>Sign in here</h2>
+		<p id='error'></p>
+		<form id='signin-form'>
+			<input type='email' name='email' placeholder='Email' required />
+			<input required type='password' name='password' placeholder='Password' />
+			<button type='submit'>Sign In</button>
+		</form>
+		<p>Don't have an account? <a href='/signup'>Sign up here</a>.</p>
+	</div>
+	<script>
+		import { authClient } from '@/lib/client/auth-client'
+
+		const errorShow = document.getElementById('error') as HTMLParagraphElement
+
+		document
+			.getElementById('signin-form')
+			?.addEventListener('submit', async (event: Event) => {
+				event.preventDefault()
+				const email = (event.target as HTMLFormElement).email.value
+				const password = (event.target as HTMLFormElement).password.value
+				const tmp = await authClient.signIn.email({
+					email,
+					password,
+				})
+				if (Boolean(tmp.error) === false) {
+					window.location.href = '/'
+				} else {
+					errorShow.textContent = '😥 ' + tmp.error?.message || ''
+				}
+			})
+	</script>
+</Layout>
+
+<style>
+	.container {
+		max-width: 500px;
+
+		h2 {
+			text-align: center;
+		}
+	}
+	#error {
+		color: var(--pico-form-element-invalid-focus-color);
+	}
+</style>

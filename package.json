@@ -1,0 +1,23 @@
+{
+	"name": "astro5-server-todo-app",
+	"type": "module",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build",
+		"preview": "pnpm build && astro preview",
+		"astro": "astro"
+	},
+	"dependencies": {
+		"@astrojs/node": "^9.0.0",
+		"@libsql/client": "^0.14.0",
+		"astro": "^5.1.1",
+		"astro-icon": "^1.1.4",
+		"better-auth": "^1.1.3",
+		"dotenv": "^16.4.7",
+		"drizzle-orm": "^0.38.2"
+	},
+	"devDependencies": {
+		"drizzle-kit": "^0.30.1"
+	}
+}

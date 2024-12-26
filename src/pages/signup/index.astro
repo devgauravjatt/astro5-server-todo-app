@@ -1,0 +1,46 @@
+---
+if (Astro.locals.user?.id) return Astro.redirect('/')
+import Layout from '@/layouts/Layout.astro'
+---
+
+<Layout>
+	<div class='container'>
+		<h2>Sign up here</h2>
+		<form id='signup-form'>
+			<input type='text' name='name' placeholder='Name' required />
+			<input type='email' name='email' placeholder='Email' required />
+			<input required type='password' name='password' placeholder='Password' />
+			<button type='submit'>Sign up</button>
+		</form>
+		<p>Already have an account? <a href='/signin'>Sign in here</a>.</p>
+	</div>
+	<script>
+		import { authClient } from '@/lib/client/auth-client'
+
+		document
+			.getElementById('signup-form')
+			?.addEventListener('submit', async (event) => {
+				event.preventDefault()
+				// @ts-ignore
+				const name = (event.target as HTMLFormElement).name.value
+				const email = (event.target as HTMLFormElement).email.value
+				const password = (event.target as HTMLFormElement).password.value
+				const tmp = await authClient.signUp.email({
+					name,
+					email,
+					password,
+				})
+				if (Boolean(tmp.error) === false) window.location.href = '/'
+			})
+	</script>
+</Layout>
+
+<style>
+	.container {
+		max-width: 500px;
+
+		h2 {
+			text-align: center;
+		}
+	}
+</style>

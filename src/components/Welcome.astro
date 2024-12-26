@@ -1,0 +1,30 @@
+---
+import { eq } from 'drizzle-orm'
+import { db } from '@/lib/server/db'
+import { user } from '@/lib/server/db/schema'
+
+export interface Props {
+	userId: string
+}
+const { userId } = Astro.props
+
+const User = await db.select().from(user).where(eq(user.id, userId)).get()
+---
+
+<div class='container'>
+	<h3 style='text-align: center;'>
+		👋 Hello, <span>{User?.name.toUpperCase()}</span>
+	</h3>
+</div>
+
+<style>
+	.container {
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+	}
+
+	span {
+		color: var(--pico-primary-background);
+	}
+</style>
