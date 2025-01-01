@@ -2,7 +2,8 @@
 import { eq } from 'drizzle-orm'
 import { db } from '@/lib/server/db'
 import { todos } from '@/lib/server/db/schema'
-import { Icon } from 'astro-icon/components'
+import DeleteSvg from '@/icons/delete.svg'
+import AddTodo from './AddTodo.astro'
 
 export interface Props {
 	userId: string
@@ -10,18 +11,18 @@ export interface Props {
 const { userId } = Astro.props
 
 const Todos = await db.select().from(todos).where(eq(todos.user, userId)).all()
-console.log('🚀  Todos :- ', Todos)
 ---
 
 <div style='width: 100%;'>
 	<h2>Todos List and Manage</h2>
+	<AddTodo />
 	<ul id='todos-ul'>
 		{
-			Todos.map((todo) => (
+			Todos.reverse().map((todo) => (
 				<li class='flex-main' data-todo-id={todo.id}>
-					{todo.todo}
+					<p>{todo.todo}</p>
 					<div class='flex-center'>
-						<Icon size={35} name='delete' />
+						<DeleteSvg size={35} name={'delete'} />
 						<input type='checkbox' checked={todo.done} name='done' />
 					</div>
 				</li>
@@ -43,8 +44,6 @@ console.log('🚀  Todos :- ', Todos)
 			const ListItem = target.parentElement?.parentElement as HTMLLIElement
 			const todoId = ListItem.dataset.todoId
 			const todoDone = target.checked
-			console.log(`🚀  todoId :- ${todoId} todoDone :- ${todoDone}`)
-
 			if (todoId) {
 				addBlinkingAnimation(ListItem)
 
@@ -61,14 +60,22 @@ console.log('🚀  Todos :- ', Todos)
 			}
 		}
 
-		if (target.tagName === 'use') {
+		if (target instanceof SVGElement) {
 			const ListItem = target.parentElement?.parentElement
 				?.parentElement as HTMLLIElement
 			const todoId = ListItem.dataset.todoId
-			addBlinkingAnimation(ListItem)
-			console.log(`🚀  todoId :- ${todoId} `)
-			await new Promise((resolve) => setTimeout(resolve, 5000))
-			removeBlinkingAnimation(ListItem)
+			if (todoId) {
+				addBlinkingAnimation(ListItem)
+				const { data, error } = await actions.removeTodo({
+					todoId: todoId,
+				})
+				if (data?.updated) {
+					ListItem.remove()
+				} else {
+					console.error(error)
+				}
+				removeBlinkingAnimation(ListItem)
+			}
 		}
 	})
 </script>
@@ -92,6 +99,15 @@ console.log('🚀  Todos :- ', Todos)
 
 	button {
 		padding: 0px;
+	}
+
+	h2 {
+		text-align: center;
+	}
+	p {
+		margin: 0px;
+		margin-block-start: 0px;
+		margin-block-end: 0px;
 	}
 
 	.flex-center {

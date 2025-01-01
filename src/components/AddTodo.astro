@@ -1,0 +1,80 @@
+---
+const userId = Astro.locals?.user?.id || ''
+---
+
+<div class='container'>
+	<div class='flex-center'>
+		<input required type='text' name='todo' placeholder='enter your todo' />
+		<button id='add-todo'>Add Todo</button>
+	</div>
+</div>
+
+<script>
+	import { authClient } from '@/lib/client/auth-client'
+	import { actions } from 'astro:actions'
+
+	const user = await authClient.getSession()
+
+	const todosUl = document.getElementById('todos-ul') as HTMLUListElement
+	const input = document.querySelector('input') as HTMLInputElement
+	const button = document.querySelector('#add-todo') as HTMLButtonElement
+
+	button.addEventListener('click', async (event) => {
+		console.log('🚀  button.addEventListener  event :- ', event)
+		console.log(user)
+		const todo = input.value
+
+		if (todo && todo.length > 5) {
+			console.log(todo)
+			const { data, error } = await actions.addTodo({
+				todo: todo,
+				userId: user.data?.user?.id || '',
+			})
+			if (data?.updated) {
+				input.value = ''
+				const GetUl = todosUl.querySelector('li') as HTMLLIElement
+
+				const MyUl = GetUl.cloneNode(true) as HTMLLIElement
+
+				const inputEl = MyUl.querySelector('input')
+
+				const p = MyUl.querySelector('p') as HTMLParagraphElement
+
+				if (inputEl) {
+					inputEl.checked = false
+				}
+
+				if (p) {
+					p.textContent = todo
+				}
+
+				MyUl.dataset.todoId = data.todoId.toString()
+
+				todosUl.insertBefore(MyUl, GetUl)
+			} else {
+				console.error(error)
+			}
+		}
+	})
+</script>
+
+<style>
+	input {
+		max-width: 22rem;
+	}
+	.flex-center {
+		display: flex;
+		gap: 3rem;
+		margin: auto;
+		justify-content: center;
+		width: 100%;
+	}
+	div {
+		margin: auto;
+	}
+	button {
+		max-width: 8rem;
+		padding-top: 0px;
+		padding-bottom: 0px;
+	}
+</style>
