@@ -4,7 +4,7 @@
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "astro dev",
-		"build": "drizzle-kit migrate && astro build",
+		"build": "drizzle-kit generate && drizzle-kit migrate && astro build",
 		"preview": "pnpm build && astro preview",
 		"astro": "astro"
 	},
