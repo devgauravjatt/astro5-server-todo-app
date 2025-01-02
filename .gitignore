@@ -26,3 +26,6 @@ pnpm-debug.log*
 # database and drizzle
 *.db
 drizzle/
+
+# Local Netlify folder
+.netlify
