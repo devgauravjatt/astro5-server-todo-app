@@ -2,6 +2,10 @@
 
 This is a simple Todo List App built with Astro and Better Auth for user authentication.
 
+> [!TIP]
+> Try out the app at https://astro5-server-todo-app.vercel.app/
+> (credentials: shaylaapricot@freesourcecodes.com - JwiMirwc)
+
 ## <img width="28" src="https://cdn-icons-png.flaticon.com/512/10435/10435176.png" alt="Features Icon" /> Features
 
 - User authentication with Better Auth
