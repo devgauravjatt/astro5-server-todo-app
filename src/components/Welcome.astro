@@ -8,12 +8,12 @@ export interface Props {
 }
 const { userId } = Astro.props
 
-const User = await db.select().from(user).where(eq(user.id, userId)).get()
+const User = await db.select().from(user).where(eq(user.id, userId))
 ---
 
 <div class='container'>
 	<h3 style='text-align: center;'>
-		👋 Hello, <span>{User?.name.toUpperCase()}</span>
+		👋 Hello, <span>{User[0].name.toUpperCase()}</span>
 	</h3>
 </div>
 

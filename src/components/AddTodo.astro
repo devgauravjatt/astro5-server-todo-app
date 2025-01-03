@@ -3,6 +3,7 @@ const userId = Astro.locals?.user?.id || ''
 ---
 
 <div class='container'>
+	<p class='text-error'>Minimum 6 characters need for a todo !</p>
 	<div class='flex-center'>
 		<input required type='text' name='todo' placeholder='enter your todo' />
 		<button id='add-todo'>Add Todo</button>
@@ -18,9 +19,9 @@ const userId = Astro.locals?.user?.id || ''
 	const todosUl = document.getElementById('todos-ul') as HTMLUListElement
 	const input = document.querySelector('input') as HTMLInputElement
 	const button = document.querySelector('#add-todo') as HTMLButtonElement
+	const errorP = document.querySelector('.text-error') as HTMLParagraphElement
 
 	button.addEventListener('click', async (event) => {
-		console.log('🚀  button.addEventListener  event :- ', event)
 		console.log(user)
 		const todo = input.value
 
@@ -54,11 +55,23 @@ const userId = Astro.locals?.user?.id || ''
 			} else {
 				console.error(error)
 			}
+		} else {
+			errorP.style.display = 'block'
+			setTimeout(() => {
+				errorP.style.display = 'none'
+			}, 2000)
 		}
 	})
 </script>
 
 <style>
+	.text-error {
+		color: rgb(255, 27, 27);
+		text-align: center;
+		display: none;
+		animation: blinking 1s infinite;
+	}
+
 	input {
 		max-width: 22rem;
 	}

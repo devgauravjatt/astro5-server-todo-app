@@ -10,7 +10,7 @@ export interface Props {
 }
 const { userId } = Astro.props
 
-const Todos = await db.select().from(todos).where(eq(todos.user, userId)).all()
+const Todos = await db.select().from(todos).where(eq(todos.user, userId))
 ---
 
 <div style='width: 100%;'>

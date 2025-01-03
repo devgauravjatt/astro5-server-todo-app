@@ -1,11 +1,4 @@
-import {
-	pgTable,
-	text,
-	integer,
-	timestamp,
-	boolean,
-	serial,
-} from 'drizzle-orm/pg-core'
+import { pgTable, text, integer, timestamp, boolean } from 'drizzle-orm/pg-core'
 
 export const user = pgTable('user', {
 	id: text('id').primaryKey(),
@@ -55,14 +48,4 @@ export const verification = pgTable('verification', {
 	expiresAt: timestamp('expires_at').notNull(),
 	createdAt: timestamp('created_at'),
 	updatedAt: timestamp('updated_at'),
-})
-
-export const todos = pgTable('todos', {
-	id: serial('id').primaryKey(),
-	todo: text('title').notNull(),
-	done: boolean('done').default(false),
-	user: text('user')
-		.notNull()
-		.references(() => user.id),
-	createdAt: timestamp('createdAt').default(new Date()),
 })

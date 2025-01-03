@@ -6,7 +6,7 @@ This is a simple Todo List App built with Astro and Better Auth for user authent
 
 - User authentication with Better Auth
 - Create, read, update and delete todos
-- Todos are stored in a SQLite database with Drizzle ORM
+- Todos are stored in a Neon database with Drizzle ORM
 - Server side rendering with Astro
 
 ## <img width="28" src="https://cdn-icons-png.flaticon.com/512/8389/8389176.png" alt="Tech Icon" /> Technologies Used
@@ -14,7 +14,7 @@ This is a simple Todo List App built with Astro and Better Auth for user authent
 - Astro
 - Better Auth
 - Drizzle ORM
-- SQLite
+- Neon Database
 - TypeScript
 
 ## <img width="28" src="https://cdn-icons-png.flaticon.com/512/10255/10255425.png" alt="Installation Icon" /> Installation

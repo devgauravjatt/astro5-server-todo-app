@@ -27,5 +27,5 @@ pnpm-debug.log*
 *.db
 drizzle/
 
-# Local Netlify folder
-.netlify
+# Local vercel   folder
+vercel
